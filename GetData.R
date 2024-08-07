@@ -22,7 +22,7 @@ codedir<-"" #define path to the folder that contain the code files of the other 
 datadir<-"" #define path to the folder that contians the data (so the folder with the COORD files and the converted CSV files)
 
 
-#_______Source functions from other files______
+#_______Source functions from other files______________
 codename_list<-list.files(codedir,pattern="\\.R") #list of all names of R scripts in code folder that contian the indivudal emtrics
 codename_list<-codename_list[codename_list!="GetData.R"] #remove this current script from the list if it is in it
 for (codename in codename_list){ #source each function
@@ -30,14 +30,14 @@ for (codename in codename_list){ #source each function
   print(codename)
 }
 
-#Get the list of filenames of the data
+#__________Get the list of filenames of the data___________
 filename_list<-c(list.files(datadir,pattern="\\.COORD"),list.files(datadir,pattern="\\.coord"))#first step to find list of filename which are the csv files we are reading ins
 filename_list<-gsub("\\.COORD","",filename_list)
 filename_list<-gsub("\\.coord","",filename_list)#list of filename's
 
 
 
-#_______MAIN FUNCTION__________
+#__________________MAIN FUNCTION___________________
 #Call function providing specific filename and purpose
 #Function will read the csv files coresponding to the filename
 #Then calls the function that that preforms the metric corresponding to the purpose
@@ -46,7 +46,7 @@ filename_list<-gsub("\\.coord","",filename_list)#list of filename's
 
 getdata<-function(filename,purpose){ #purpose is the purpose of this function
   
-  #Read in and format the data for the given filenames
+  #Read in csv files and format the data for the given filename
   spectra_data<<-read.csv(paste0(datadir,filename,"_coord.csv"))#read spectra data which is the spectral datapoints
   spectra_data$Residual<<-spectra_data$RawData-spectra_data$ProcessedData #Calculate a residual
   maxamp <- max(subset(spectra_data, ppm >= 1.5 & ppm <= 4)$ProcessedData) #To calibrate the relative amplitude scale, use the highest peak from 1.5ppm to 4.0 ppm
@@ -58,7 +58,7 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
   #note R will display the csv files' headers with weird notation for special characters. Make sure to check with csv file if unsure of header in data frames.
   
   
-  #Calls other functions given purpose
+  #Calls other functions to preform metric given purpose
   if (purpose=="Plot"){
     return(plotgraph(spectra_data,met_data,misc_data,filename))
   }else if (purpose=="Double"){
@@ -77,29 +77,10 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
     Insscore=Insdata$score
     Insextrascore1=Insdata$extrascore1
     return(plotgraphGlxIns(spectra_data,met_data,misc_data,filename,Glxscore,Glxextrascore1,gammascore,Insscore,Insextrascore1))
-  }else if (purpose == "Peaksppmtest"){
-    PeaksppmTest(spectra_data,met_data,misc_data,filename)
-  }else if (purpose == "PlotPeaksOffset"){
-    dataframe<-PeaksppmTest(spectra_data,met_data,misc_data,filename)
-    PlotPeaksOffset(spectra_data,filename,dataframe)
-  }else if (purpose == "Range"){
-    rangetest(spectra_data,met_data,misc_data,filename)
-  }else if (purpose == "BigLeftRight"){
-    BigLeftRight(spectra_data,filename)
   }else if (purpose =="Negative"){
     return(append(artifact_negative_graph(spectra_data,met_data,misc_data,filename),artifact_negative_baseline(spectra_data,met_data,misc_data,filename)))
-  }else if (purpose=="SNR_FWHM"){
-    return(misc_data[c(1,2)])
   }else if (purpose=="PlotNegative"){
     return(PlotNegative(spectra_data,met_data,misc_data,filename))
-  }else if (purpose=="CRLB"){
-    Glu<-met_data$X.SD[which(met_data$Metabolite=="Glu")]
-    Gln<-met_data$X.SD[which(met_data$Metabolite=="Gln")]
-    Ins<-met_data$X.SD[which(met_data$Metabolite=="Ins")]
-    Glx<-met_data$X.SD[which(met_data$Metabolite=="Glu+Gln")]
-    return(list(Glu=Glu,Gln=Gln,Ins=Ins,Glx=Glx))
-  }else if (purpose=="Gauss"){
-    return(gaussiantest(filename,spectra_data,"Ins"))
   }
 }
 
