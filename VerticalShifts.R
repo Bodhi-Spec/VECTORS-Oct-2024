@@ -1,4 +1,7 @@
-#____ADD EXPLINATION
+#This file supports the Vertical Shift tests --> the functions (anyNegative() and belowBaseline()) that detects if the processed data is negative and below the baseline respectively
+#Both anyNegative() and belowBaseline() is called through the GetData() function which provides it with the data in the parameters
+
+#
 anyNegative<-function(spectra_data,met_data,misc_data,filename){
   negative_ppm<-spectra_data$ppm[spectra_data$ProcessedData<=0] #subset all the points which are negative
   negative_ppm<-negative_ppm[negative_ppm>1.8] #subsets all the points which are in the metabolite ppm range
