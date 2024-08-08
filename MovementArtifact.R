@@ -1,16 +1,17 @@
-#_________Try to find artifact from patient movemtn, two peaks_________
-artifact_double<-function(spectra_data,met_data,misc_data,filename){
+#This File contains the fucntion (called MovementArtifact()) that detects movement artifacts that present as doublepeaks
+#MovementArtifact() is called through the GetData() function which provides it with the data in the parameters
+
+MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   plot<-ggplot(spectra_data,aes(x=ppm))+geom_line(aes(y=ProcessedData),size=.5,color="red")+geom_line(aes(y=RawData),size=.05,color="black")+geom_line(aes(y=Background),color="blue")#graphs data (procesed+raw) + base
   plot<-plot+scale_x_reverse(breaks = seq(0, 4, .2),minor_breaks = seq(0, 4, 0.1))+theme_minimal()#reverse x axis (like in LC model)+axis tick mars
   plot<-plot+ggtitle(filename)+ylab("Amplitude")#Add labels
   
-  #Now try to find the dublet peaks. (only checking for NAA, CHo Cr)
-  #Tentative Criteria for what is a dublet peak: 
-    #(1) span>3. 
-    #(2) peak in ppm range of metabolite (metabolite exact location +/- (FWHM+.05). But between Cho and Cr FWHM has max of (Cho-Cr)/2 But on upper bound of Cho and lower bound of Cr met FWHM is FWHM!=FWHM+.05) 
+  #Criteria for what constitutes a doublet peak/movement artifact (only checking doublet peaks of NAA, CHo Cr). The peak has to:
+    #(1) have a span > 3. 
+    #(2) be in the ppm range of metabolite (exact range elucidated below)
   
-  #Tentative criteria pt 1 (orange peaks): Note this criteria often detects NAAG as a dublet peak. So only appl this criteria to Cho Cr
-    #(3) The minimium in the valley between adjacent peaks must be .02 less in amplitude than the smaller of the two peaks for NAA, .01 for CHo and Cr 
+  #Criteria 1 (orange peaks): Note only apply this criteria to Cho and Cr because withina NAA often falsely detects NAAG as a dublet peak
+    #(3) The minimium in the valley between adjacent peaks must be .01 less in amplitude than the smaller of the two peaks for Cho and Cr 
     #(4) For Cho, Cr, peaks need to be above 1/3(Amp-Baseline)+Baseline. 
   
   #Tentitive Criteria pt 2 (green peaks). 
@@ -21,6 +22,8 @@ artifact_double<-function(spectra_data,met_data,misc_data,filename){
   #after filtered to only double peak, Artifact in spectra if >1 filtered peak (verticle line) in each ppm range of metabolite
   #Maybe, (3+4) are not good criteria and should only look at criteria 5
 
+
+   (metabolite exact location +/- (FWHM+.05). But between Cho and Cr FWHM has max of (Cho-Cr)/2 But on upper bound of Cho and lower bound of Cr met FWHM is FWHM!=FWHM+.05) 
   
   FWHM<-misc_data$FWHM..ppm.
   FWHM1<-FWHM+.05
