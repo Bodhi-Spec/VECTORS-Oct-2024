@@ -61,8 +61,8 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
   #Calls other functions to preform metric given purpose
   if (purpose=="Plot"){
     return(plotgraph(spectra_data,met_data,misc_data,filename))
-  }else if (purpose=="MovementArtifact"){
-    return(MovementArtifact(spectra_data,met_data,misc_data,filename))
+  }else if (purpose=="DuplicatePeaks"){
+    return(DuplicatePeaks(spectra_data,met_data,misc_data,filename))
   }else if (purpose=="Glx"){
     return(Glxpeaks(spectra_data))
   }else if (purpose=="Ins"){
