@@ -9,22 +9,23 @@ MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   #Criteria for what constitutes a doublet peak/movement artifact (only checking doublet peaks of NAA, CHo Cr). The peak has to:
     #(1) have a span > 3. 
     #(2) be in the ppm range of metabolite (exact range elucidated below)
+
+  #Criteria A (orange vertical lines). 
+    #(3) If a criteria (1+2) is found in all three metabolites all, then doublet peaks must: Difference in ppm from a doublet peak to the main met peak (+/- ppm diffrence of two adjacent data points) is found in all three metabolitees
   
-  #Criteria 1 (orange peaks): Note only apply this criteria to Cho and Cr because withina NAA often falsely detects NAAG as a dublet peak
-    #(3) The minimium in the valley between adjacent peaks must be .01 less in amplitude than the smaller of the two peaks for Cho and Cr 
-    #(4) For Cho, Cr, peaks need to be above 1/3(Amp-Baseline)+Baseline. 
+  #Criteria B (green vertical lines): Note only apply this criteria to Cho and Cr because withina NAA often falsely detects NAAG as a dublet peak
+    #(4) For Cho, Cr, peaks need to be above 1/3(Amp-Baseline)+Baseline.  
+    #(5) The minimium in the valley between adjacent peaks must be .01 less in amplitude than the smaller of the two peaks for Cho and Cr 
+     
   
-  #Tentitive Criteria pt 2 (green peaks). 
-    #(5) If a criteria (1+2) dublet peak is found in all three metabolites, then criteira (3) can be ommited. 
-    #(5) cont. FOund in all three metabolites if: Difference in ppm from a dublet peak to the main met peak +/- ppm diffrence of twoadjacent data points is found in multiple metabolitees. --> can simplifyi instead of looking at ppm look at difference in indexes
-  
-  #In other words, criteria (1+2) always have to be met, but either (3+4 ->Orange) OR (5 -> green) have to be met to be a double
-  #after filtered to only double peak, Artifact in spectra if >1 filtered peak (verticle line) in each ppm range of metabolite
-  #Maybe, (3+4) are not good criteria and should only look at criteria 5
+
+  #In other words, criteria (1+2) always have to be met, but either (3 -> Green) OR (4+5 -> Orange) have to be met to be a double
 
 
-   (metabolite exact location +/- (FWHM+.05). But between Cho and Cr FWHM has max of (Cho-Cr)/2 But on upper bound of Cho and lower bound of Cr met FWHM is FWHM!=FWHM+.05) 
+   
   
+  #_____Finds all peaks that fulfill Criteria 1+2 __________
+  #Note met range is (metabolite exact location +/- (FWHM+.05). But between Cho and Cr FWHM has max of (Cho-Cr)/2 But on upper bound of Cho and lower bound of Cr met FWHM is FWHM!=FWHM+.05) 
   FWHM<-misc_data$FWHM..ppm.
   FWHM1<-FWHM+.05
   if (FWHM1>=(3.210943-3.0270-.05)){
@@ -40,30 +41,32 @@ MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   Chodfraw<-subset(peaks_df,(ppm>=(3.210944-FWHM1) & ppm<=(3.210944+FWHM1)))#dataframe of unfiltered dublet CHoline peaks. Note use FWHM1 for boundary between Cho and Cr. Note use lower high bound.
   
   
-  #ERROR MEASURES
+  #ERROR MEASURES ---> will report an error if no peaks are found in a metabolite range, implying that the spectrum is super extraneous
   ploterror<-plot+ geom_label_npc(label=paste0("exist faze= error"),npcx=.93,npcy=.95)
   ploterror<-ploterror+ geom_label_npc(label=paste0("exist duplicate= error"),npcx=.93,npcy=1)
   if (nrow(NAAdfraw)==0||nrow(Crdfraw)==0||nrow(Chodfraw)==0){
     error=TRUE
     return(list(plot=ploterror, existfaze="error",existduplicate="error")) #returns empty plot
   }
+
   
   NAAdf<-NAAdfraw
   Crdf<-Crdfraw
   Chodf<-Chodfraw
-  
+
+  #___Now find the specific metabolite mainpeak
   NAApeakdf<-subset(NAAdf,ppm>(2.0080-.05)  & ppm<(2.0080+.05))#Smaller range to find NAApeak
   Crpeakdf<-subset(Crdf,ppm>(3.0270-.05)  & ppm<(3.0270+.05))#smaller range to find Crpeak
   Chopeakdf<-subset(Chodf,ppm>(3.210944-.05)  & ppm<(3.210944+.05))#Smaller range to find Chopeak 
   
-  #ERROR MEASURES pt2.
+  #ERROR MEASURES pt2 ---> if no main metabolite peak is detected
   if (nrow(NAApeakdf)==0||nrow(Crpeakdf)==0||nrow(Chopeakdf)==0){
     error=TRUE
     return(list(plot=ploterror, existfaze="error",existduplicate="error")) #returns empty plot
   }
   
   
-  #criteria (5)
+  #_____________Criteria 3_______
   NAAmaxindex<-NAApeakdf$index[which.max(NAApeakdf$amp)]
   NAAmax<-which(NAAdf$index==NAAmaxindex)
   NAAdifference<-c() #difference is defined by index[max]-index[i]. This list holds the difference in ideces from a given NAA dublet peak to the NAA peak
@@ -132,45 +135,31 @@ MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   Crselectindex<-Crdf$index[Crmax]-Crselectdiff
   
   #now we need to make new data frame for the verticle lines that are duplicates in all metbaolites. we have the indexes from NAAdf, Chodf, and Crdf
-  NAAcriteria5df<-subset(NAAdf,index %in% NAAselectindex)
-  Chocriteria5df<-subset(Chodf,index %in% Choselectindex)
-  Crcriteria5df<-subset(Crdf,index %in% Crselectindex)
+  NAAcriteria3df<-subset(NAAdf,index %in% NAAselectindex)
+  Chocriteria3df<-subset(Chodf,index %in% Choselectindex)
+  Crcriteria3df<-subset(Crdf,index %in% Crselectindex)
   
   
 
 
+
   
-  #Criteria (4)
+  #___________________Criteria 4_-___
   #NAAabove<- max(NAAdf$amp)/3+2*(NAAdf$base[which.max(NAAdf$amp)])/3
   Crabove<- max(Crdf$amp)/3+2*(Crdf$base[which.max(Crdf$amp)])/3
   Choabove<- max(Chodf$amp)/3+2*(Chodf$base[which.max(Chodf$amp)])/3
   
-  
-  #NAAdf<-subset(NAAdf,amp> NAAabove)#Fulfill criteria (4)
-  Crdf<-subset(Crdf,amp> Crabove)#Fulfill criteria (4)
-  Chodf<-subset(Chodf,amp> Choabove)#Fulfill criteria (4)
+  #NAAdf<-subset(NAAdf,amp> NAAabove)
+  Crdf<-subset(Crdf,amp> Crabove)
+  Chodf<-subset(Chodf,amp> Choabove)
   
   
   
 
   
-  #this for loop fulfilles crieteria (3). it finds the min between two adjacent peaks and makes sure its significantly less than both peaks
-  #Note disregard NAA form this criteria
-      # offset<-0
-      # if (nrow(NAAdf)>1){
-      #   for (i in 1:(nrow(NAAdf)-1)){
-      #     start<-NAAdf$index[i-offset]
-      #     end<-NAAdf$index[i+1-offset]
-      #     valley<-min(spectra_data$RelativeAmp[start:end])
-      #     if ((valley+.02) > min(NAAdf$amp[i-offset],NAAdf$amp[i+1-offset])){ #if valley is within .02 of lowest peak, dont count this peak. Prolly still have some movement artifact, just not significant eneough
-      #       NAAdf<-NAAdf[-which(NAAdf$amp==min(NAAdf$amp[i-offset],NAAdf$amp[i+1-offset])),]
-      #       offset<-offset+1
-      #     }
-      #   }
-      # }else if (nrow(NAAdf)==0){
-      #   print("ERROR, no NAA detected")
-      # }
-  #For Cr criteria (3)
+  #this for loop fulfilles crieteria (5). it finds the valley between two adjacent peaks and makes sure its significantly less than both peaks
+  #Note NAA is not checkde for this critera
+  #For Cr
   offset<-0
   if (nrow(Crdf)>1){
     for (i in 1:(nrow(Crdf)-1)){
@@ -185,7 +174,7 @@ MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   }else if (nrow(Crdf)==0){
     print("ERROR, no Cr detected")
   }
-  #For Choline criteria (3)
+  #For Cho
   offset<-0
   if (nrow(Chodf)>1){
     for (i in 1:(nrow(Chodf)-1)){
@@ -211,38 +200,20 @@ MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   Chodf<-subset(Chodf,Chodf$index!=Chodf_max$index)
   Crdf<-subset(Crdf,Crdf$index!=Crdf_max$index)
 
-  duplicate_x_peaks<-c(NAAcriteria5df$ppm,Crcriteria5df$ppm,Chocriteria5df$ppm) #ppm values of the peaks that show up in all metabolites (criteria 1,2,5)
-  filtered_x_peaks<-c(Crdf$ppm,Chodf$ppm) #ppm of pekas that survive crtieria 1-4 (exluding NAA)
-  #raw_x_peaks<-c(NAAdfraw$ppm,Crdfraw$ppm,Chodfraw$ppm) #ppm of peaks that sruvive criteria 1-2
+  criteria3peaks<-c(NAAcriteria3df$ppm,Crcriteria3df$ppm,Chocriteria3df$ppm) #ppm values of the peaks that show up in all metabolites (criteria 1,2,5)
+  filtered_x_peaks<-c(Crdf$ppm,Chodf$ppm) #ppm of pekas that survive crtieria 1,2,4,5
   
-  #Use this only for NEUROPRECISE 40ms. Because in this scenerio there is a metabolite on the left side of Cho that is flagged
-  #filtered_x_peaks<-filtered_x_peaks[filtered_x_peaks<Chodf_max$ppm]
   
-  #plot<-plot+geom_vline(xintercept =raw_x_peaks, linetype = "dashed", color = "blue")
-  #plot<-plot+geom_vline(xintercept =filtered_x_peaks, linetype = "dashed", color = "orange")
-  #plot<-plot+geom_vline(xintercept =duplicate_x_peaks, linetype = "dashed", color = "green")
-  #add verticle lines where peaks Blue is a raw peak (only filtered in ppm location and span=5 or (1) and (2) criteria). Orange peak is filtered peal (with (3) and (4) criteria). Green is dupliate peaks found in all three peaks(criteria 5)
-  #In other words orange+green peaks togerther show peaks all "accurate peaks" that can either be the peak itself or a doublet
-  #Note orange and green peaks overlap, but are not subsets of each other.
-  plot<-plot+geom_vline(xintercept =filtered_x_peaks, linetype = "dashed", color = "green")
-  plot<-plot+geom_vline(xintercept =duplicate_x_peaks, linetype = "dashed", color = "orange")
-  plot<-plot+geom_vline(xintercept =range, linetype = "dashed", color = "black")#range in which we are scanning both for faze and dublet
-  if ((length(duplicate_x_peaks)>0)||(length(filtered_x_peaks)>0)){#exluding NAA
+  #add verticle lines identifying peaks on the spectrum
+  plot<-plot+geom_vline(xintercept =filtered_x_peaks, linetype = "dashed", color = "green") #Green lines are for criteria 1,2,4,5
+  plot<-plot+geom_vline(xintercept =criteria3peaks, linetype = "dashed", color = "orange") #orange lines are for criteria 1,2,3
+  plot<-plot+geom_vline(xintercept =range, linetype = "dashed", color = "black") #black vertical lines denote the range in which we are scanning for doublet peaks
+  if ((length(duplicate_x_peaks)>0)||(length(criteria3peaks)>0)){ #if any peaks are identifiied
     existduplicate<-TRUE
   }else{
     existduplicate<-FALSE
   }
-  plot<-plot+ geom_label_npc(label=paste0("exist duplicate= ",existduplicate),npcx=.93,npcy=.9)
-  
-  
-  #NOTE this section is creating the parameters for artifact_negative()
-  #return ppm of all the detected doubles (both green and orange peaks or criteria 1-4 or 1,2,5)
-  #NAAdouble<-unique(rbind(NAAcriteria5df,NAAdf))
-  Chodouble<-unique(rbind(Chocriteria5df,Chodf))
-  Crdouble<-unique(rbind(Crcriteria5df,Crdf))
-  
-  #call faze function, and return list (to broader peaks function) containing the plot, existfaze, and existduplicate
-  #Note only use criteria 5 peaks as bojunds for 
-  return(c(artifact_negative_faze(spectra_data,met_data,misc_data,filename,NAAcriteria5df,Chodouble,Crdouble,NAAdf_max,Chodf_max,Crdf_max,plot),existduplicate=existduplicate))
+  plot<-plot+ geom_label_npc(label=paste0("exist duplicate= ",existduplicate),npcx=.93,npcy=.9) #add label of if movment artifact on the plot
+  return(list(plot=plot,existDuplicate=existduplicate))
 }
 
