@@ -2,8 +2,9 @@
 #MovementArtifact() is called through the GetData() function which provides it with the data in the parameters
 
 MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
-  plot<-ggplot(spectra_data,aes(x=ppm))+geom_line(aes(y=ProcessedData),size=.5,color="red")+geom_line(aes(y=RawData),size=.05,color="black")+geom_line(aes(y=Background),color="blue")#graphs data (procesed+raw) + base
-  plot<-plot+scale_x_reverse(breaks = seq(0, 4, .2),minor_breaks = seq(0, 4, 0.1))+theme_minimal()#reverse x axis (like in LC model)+axis tick mars
+  #Prepare the plot of the spectrum
+  plot<-ggplot(spectra_data,aes(x=ppm))+geom_line(aes(y=ProcessedData),size=.5,color="red")+geom_line(aes(y=RawData),size=.05,color="black")+geom_line(aes(y=Background),color="blue") #graphs processed, raw, and baseline data
+  plot<-plot+scale_x_reverse(breaks = seq(0, 4, .2),minor_breaks = seq(0, 4, 0.1))+theme_minimal() #reverse x axis (like in LC model)+axis tick mars
   plot<-plot+ggtitle(filename)+ylab("Amplitude")#Add labels
   
   #Criteria for what constitutes a doublet peak/movement artifact (only checking doublet peaks of NAA, CHo Cr). The peak has to:
