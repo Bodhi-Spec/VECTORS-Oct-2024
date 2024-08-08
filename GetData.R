@@ -1,6 +1,6 @@
 #This is the main file that calls each individual metrics
 #This file will source functions of each metric from their respective folders
-#This file loads in pacakges
+#This file loads in packages
 #This file loads in the input csv data
 #This file outputs the results of each called metric
 
