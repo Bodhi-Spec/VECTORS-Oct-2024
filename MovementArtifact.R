@@ -208,7 +208,7 @@ MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
   plot<-plot+geom_vline(xintercept =filtered_x_peaks, linetype = "dashed", color = "green") #Green lines are for criteria 1,2,4,5
   plot<-plot+geom_vline(xintercept =criteria3peaks, linetype = "dashed", color = "orange") #orange lines are for criteria 1,2,3
   plot<-plot+geom_vline(xintercept =range, linetype = "dashed", color = "black") #black vertical lines denote the range in which we are scanning for doublet peaks
-  if ((length(duplicate_x_peaks)>0)||(length(criteria3peaks)>0)){ #if any peaks are identifiied
+  if ((length(filtered_x_peaks)>0)||(length(criteria3peaks)>0)){ #if any peaks are identifiied
     existduplicate<-TRUE
   }else{
     existduplicate<-FALSE
