@@ -7,15 +7,6 @@
 #____________________Read in Packages_________________
 library(ggplot2)
 library(ggpmisc)
-library(nortest)
-library(car)
-library(splus2R)
-library(progress)
-library(stringr)
-library(e1071)
-library(openxlsx2)
-library(dplyr)
-library(ggrepel)
 
 #_________ Define code and data paths_____________________________________
 codedir<-"" #define path to the folder that contain the code files of the other functions
