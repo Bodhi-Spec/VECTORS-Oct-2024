@@ -79,8 +79,6 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
     return(plotgraphGlxIns(spectra_data,met_data,misc_data,filename,Glxscore,Glxextrascore1,gammascore,Insscore,Insextrascore1))
   }else if (purpose =="Negative"){
     return(append(artifact_negative_graph(spectra_data,met_data,misc_data,filename),artifact_negative_baseline(spectra_data,met_data,misc_data,filename)))
-  }else if (purpose=="PlotNegative"){
-    return(PlotNegative(spectra_data,met_data,misc_data,filename))
   }
 }
 
