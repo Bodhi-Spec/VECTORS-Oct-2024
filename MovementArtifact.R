@@ -1,7 +1,7 @@
-#This File contains the fucntion (called MovementArtifact()) that detects movement artifacts that present as doublepeaks
-#MovementArtifact() is called through the GetData() function which provides it with the data in the parameters
+#This file contains the fucntion (called DuplicatePeaks()) that detects movement artifacts that present as duplicate peaks
+#DuplicatePeaks() is called through the GetData() function which provides it with the data in the parameters
 
-MovementArtifact<-function(spectra_data,met_data,misc_data,filename){
+DuplicatePeaks<-function(spectra_data,met_data,misc_data,filename){
   #Prepare the plot of the spectrum
   plot<-ggplot(spectra_data,aes(x=ppm))+geom_line(aes(y=ProcessedData),size=.5,color="red")+geom_line(aes(y=RawData),size=.05,color="black")+geom_line(aes(y=Background),color="blue") #graphs processed, raw, and baseline data
   plot<-plot+scale_x_reverse(breaks = seq(0, 4, .2),minor_breaks = seq(0, 4, 0.1))+theme_minimal() #reverse x axis (like in LC model)+axis tick mars
