@@ -3,13 +3,16 @@
 #Once provided, the code will create three .csv files that contain 1) the data points 2) the metbolite information (CRLB, SD, etc) and 3) Miscelleneous stats such as SNR and FWHM
 #These .csv files will be outputted in the original folder
 
+#______Import packages________________
 import sys
 from glob import glob
 import numpy as np
 from numpy import r_, c_
 import pandas as pd
 
-def read_misc(filetxt, infoline, n_info):#This function  reads the coord file for misc data
+
+#__________Function reads COORD file for miscelleneous data______________
+def read_misc(filetxt, infoline, n_info):
     infoline=infoline.strip()#remove whitespace
     FWHM_start=infoline.find("FWHM = ")+len("FWHM = ")#index of where the numerical value of FWHM starts
     FWHM_end=infoline.find(" ppm")#index of where numerical value of FWHM ends
@@ -41,7 +44,8 @@ def read_misc(filetxt, infoline, n_info):#This function  reads the coord file fo
     return pd.DataFrame({"FWHM (ppm)":[FWHM_value],"S/N":[SNR_value],"Data Shift (ppm)":[Datashift_value], "Ph1 (deg)":[Ph1_value], "Ph2 (deg/ppm)":[Ph2_value]})#returns data frame with FWHM, SNR, Datashift, Ph1, Ph2
 
 
-def read_Metabolites(filetxt):#function that reads coord files for the metabolite data (with CRLB, conc, SD, etc)
+#___________Function that reads the COORD file for metabolite data
+def read_Metabolites(filetxt):
     for n, linetxt in enumerate(filetxt):#find data abt headers of Metabolite array
         if (("Conc." in linetxt.strip().split()) and ("%SD" in linetxt.strip().split()) and ("Metabolite"in linetxt.strip().split())):
             header_index = n #header_index is the index of the line in which the headers (Conc.,  %SD, /Cr+PCr, Metabolite)for the metabolite array is found. 
@@ -72,8 +76,8 @@ def read_Metabolites(filetxt):#function that reads coord files for the metabolit
 
 
     
-
-def read_coord(coordfileloc):  #this function reads each coord file in the folder (coorddir), then returns it in a new format. However it does not yet create the csv file, that is done in the main fucntion
+#___________Function that reads the COORD file for the data points
+def read_coord(coordfileloc): 
 #this function only returns the coordinates of the spectra points
     print('Converting '+coordfileloc+'...')
 
@@ -193,8 +197,8 @@ def read_coord(coordfileloc):  #this function reads each coord file in the folde
 
 
 
-
-def main(coorddir): #This function takes the directory of the folder of coord files as input. Iterating over each file, it calls the read_coord fucntion. It takes the output of the read_coord function (the coord file in csv format) and finally creates a csv file with the converted coord file.
+#____________Main function that takes the directory of the COORD files, calls the specific functions, and then creates all three csv files.
+def main(coorddir): 
     if coorddir[-1] != '/':
         coorddir += '/'
     coords = glob(coorddir+'*.COORD') + glob(coorddir+'*.coord')#for some reason COORD folder has to be in desktop, it cant be within any other folder.
@@ -214,12 +218,8 @@ def main(coorddir): #This function takes the directory of the folder of coord fi
         print(coord.rsplit('.')[0]+'_Metabolites_coord.csv' + ' written')   
 
 
-
+#Here is where we specify the director of the folder with the COORD files and call the main function
 coorddir=str(input("What is the directiory of the folder with the coord files? "))#function that prompts user for location of coord files
 #Note that for some reason the folder should be in desktop (like not nested in anotehr folder) + the name of the folder should not contain any special charafcters or spaces
 print(coorddir)
 main(coorddir)#calls function
-
-#if __name__ == '__main__':
-#    main(sys.argv[1])
-
