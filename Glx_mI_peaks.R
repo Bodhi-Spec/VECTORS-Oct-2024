@@ -1,13 +1,6 @@
-#This file contains the functions (Glxpeaks() and mIpeaks()) that detects movement artifacts that present as duplicate peaks
-#DuplicatePeaks() is called through the GetData() function which provides it with the data in the parameters
-#Outputs the spectra outlining any duplicate peaks and a TRUE/FALSE statement of if a movement artifact was detected
-
-# Contians 3 functions.
-# Glxpeaks() calculates the quality of Glx and its gamma peak
-# mIpeaks() calculates the quality of the mI peak
-# plotgraphGlxmI() plots the spectrum and its 5 different scores
-
-
+#This file supports the Glx and mI Peaks tests --> the functions (Glxpeaks() and mIpeaks()) that detects the Merge and Distinct metrics for both Glx and mI
+#Both Glxpeaks() and mI() are called through the GetData() function which provides it with the data in the parameters. To call these functions, use the command getdata(filename,"Glx_mI_Peaks")
+#Outputs a list of all four scores 
 
 Glxpeaks<-function(spectra_data){
   bigdata<-subset(spectra_data,ppm>2.1 & ppm<2.5) #this is the data frame where I'm going to search for the peaks 
