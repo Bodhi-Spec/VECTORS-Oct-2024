@@ -1,5 +1,5 @@
 #This file contains the fucntion (called DuplicatePeaks()) that detects movement artifacts that present as duplicate peaks
-#DuplicatePeaks() is called through the GetData() function which provides it with the data in the parameters
+#DuplicatePeaks() is called through the GetData() function which provides it with the data in the parameters. To call these functions, use the command getdata(filename,"DuplicatePeaks")
 #Outputs the spectra outlining any duplicate peaks and a TRUE/FALSE statement of if a movement artifact was detected
 
 DuplicatePeaks<-function(spectra_data,met_data,misc_data,filename){
