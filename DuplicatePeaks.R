@@ -33,7 +33,8 @@ DuplicatePeaks<-function(spectra_data,met_data,misc_data,filename){
   if (FWHM1>=(3.210943-3.0270-.05)){
     FWHM1<-3.210943-3.0270-.05 #this .05 is so that Cho doesnt incljude an offset (bY .05ppm) Cr peal
   }
-  
+
+  #note the peaks() function is from the splus2R package
   vector_peak<-peaks(spectra_data$RelativeAmp,span=3)#returns vector of length processed data, with only TRUE or FALSE elements. TRUE being that element is a peak
   index_peaks<-which(vector_peak==TRUE) #index of peaks
   peaks_df<-data.frame(index= index_peaks, ppm=spectra_data$ppm[index_peaks], amp=spectra_data$RelativeAmp[index_peaks],base=spectra_data$RelativeBase[index_peaks])#data frame with amplitude and ppm of allpeaks and the row index of these data points in spectra_data
