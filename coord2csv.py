@@ -218,8 +218,8 @@ def main(coorddir):
         print(coord.rsplit('.')[0]+'_Metabolites_coord.csv' + ' written')   
 
 
-#Here is where we specify the director of the folder with the COORD files and call the main function
-coorddir=str(input("What is the directiory of the folder with the coord files? "))#function that prompts user for location of coord files
+#_____________Here specify the directory of the folder contiang CSV files and call main function
+coorddir="" #HERE USER NEEDS TO SPECIFY PATH OF FOLDER
 #Note that for some reason the folder should be in desktop (like not nested in anotehr folder) + the name of the folder should not contain any special charafcters or spaces
-print(coorddir)
+
 main(coorddir)#calls function
