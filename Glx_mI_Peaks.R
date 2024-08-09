@@ -22,7 +22,7 @@ Glxpeaks<-function(spectra_data){
     }
   }
   
-  return(list(Merge=Merge,Distinct=Distinct)) #Returns the Merge and Distinct scores
+  return(list(GlxMerge=Merge,GlxDistinct=Distinct)) #Returns the Merge and Distinct scores
 }
 
 mIpeaks<-function(spectra_data){
@@ -46,5 +46,5 @@ mIpeaks<-function(spectra_data){
     }
   }
 
-  return(list(Merge=Merge,Distinct=Distinct)) #Returns the Merge and Distinct scores
+  return(list(mIMerge=Merge,mIDistinct=Distinct)) #Returns the Merge and Distinct scores
 }
