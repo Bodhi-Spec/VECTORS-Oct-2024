@@ -7,6 +7,7 @@
 #____________________Read in Packages_________________
 library(ggplot2)
 library(ggpmisc)
+library(splus2R)
 
 #_________ Define code and data paths_____________________________________
 codedir<-"" #define path to the folder that contain the code files of the other functions
