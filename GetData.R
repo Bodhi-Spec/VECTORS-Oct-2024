@@ -55,7 +55,7 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
     return(plotgraph(spectra_data,met_data,misc_data,filename))
   }else if (purpose=="DuplicatePeaks"){
     return(DuplicatePeaks(spectra_data,met_data,misc_data,filename))
-  }else if (purpose=="Glx"){
+  }else if (purpose=="Glx_mI_Peaks"){
     return(Glxpeaks(spectra_data))
   }else if (purpose=="Ins"){
     return(Inspeaks(spectra_data))
@@ -84,7 +84,8 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
 #list of purposes (parameter in the getdata() function) and the metrics reported:
 #purpose="VerticalShifts" --> reports anyNegative and belowBaseline metric
 #purpose="DuplicatePeaks" --> reports existDuplicate metric and graphs the spectrum with duplicate peaks outlined
-#Glx_mI_Peaks
+#purpose = "Glx_mI_Peaks" --> reports Glx Merge, Glx Distinct, mI Merge, and mI Distinct
+#purpose = "Plot" --> plots the spectrum for visualization
 
 
 
