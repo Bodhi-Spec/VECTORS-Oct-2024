@@ -10,7 +10,7 @@ Provided are five R scripts:
     - Duplicate Peaks reports the metric existDuplicate
     - Glx_mI_peaks report the metrics Glx Distinct, Glx Merge, mI Distinct, and mI Merge.
 - A fourth script, plotgraph, can plot the data into a spectrum and is helpful for visualization, but is not necessary for the DQC pipeline. 
-- Finally, the last script, GetData is the parent function that 1) Reads in the csv files and 2) calls the other four R script functions. 
+- Finally, the last script, GetData is the parent function that 1) loads the packages 2) reads in the csv files and 2) calls the other four R script functions. 
     - Example ways to call the other R functions are provided at the bottom of the script.
 
 
