@@ -56,19 +56,7 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
   }else if (purpose=="DuplicatePeaks"){
     return(DuplicatePeaks(spectra_data,met_data,misc_data,filename))
   }else if (purpose=="Glx_mI_Peaks"){
-    return(Glxpeaks(spectra_data))
-  }else if (purpose=="Ins"){
-    return(Inspeaks(spectra_data))
-  }else if (purpose == "PlotGlxIns"){
-    Glxdata<-(getdata(filename,"Glx"))# to test one file, input file name and purpose
-    Glxscore=Glxdata$score
-    Glxextrascore1=Glxdata$extrascore1
-    gammascore=Glxdata$gammascore
-    Insdata<-(getdata(filename,"Ins"))# to test one file, input file name and purpose
-    Insrow=Insdata$row
-    Insscore=Insdata$score
-    Insextrascore1=Insdata$extrascore1
-    return(plotgraphGlxIns(spectra_data,met_data,misc_data,filename,Glxscore,Glxextrascore1,gammascore,Insscore,Insextrascore1))
+    return(append(Glxpeaks(spectra_data),mIpeaks(spectra_data)))
   }else if (purpose =="VerticalShifts"){
     return(append(anyNegative(spectra_data,met_data,misc_data,filename),belowBaseline(spectra_data,met_data,misc_data,filename)))
   }
