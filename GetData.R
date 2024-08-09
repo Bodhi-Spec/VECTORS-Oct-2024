@@ -78,7 +78,7 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
 
 
 #To find the doublet function (detecting movement artifact) for the first file:
-getdata(filename_list[1],"Double")
+getdata(filename_list[1],"DuplicatePeaks")
 
 #To plot all the data in the folder and compile the spectra in a pdf:
 outputpath<- "" #define output path
