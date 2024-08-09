@@ -1,23 +1,13 @@
+#This file contains the functions (Glxpeaks() and mIpeaks()) that detects movement artifacts that present as duplicate peaks
+#DuplicatePeaks() is called through the GetData() function which provides it with the data in the parameters
+#Outputs the spectra outlining any duplicate peaks and a TRUE/FALSE statement of if a movement artifact was detected
+
 # Contians 3 functions.
 # Glxpeaks() calculates the quality of Glx and its gamma peak
 # mIpeaks() calculates the quality of the mI peak
 # plotgraphGlxmI() plots the spectrum and its 5 different scores
 
 
-
-#________________Function that plots the graph given a single filename________________
-plotgraphGlxmI<-function(spectra_data,met_data,misc_data,filename,GlxMerge,GlxDistinct,mIMerge,mIDistinct){
-  plot<-ggplot(spectra_data,aes(x=ppm))+geom_line(aes(y=ProcessedData),size=.5,color="red")+geom_line(aes(y=RawData),size=.05,color="black")+geom_line(aes(y=Background),color="blue")#graphs RELATIVE data (procesed+raw) + base
-  plot<-plot+scale_x_reverse(breaks = seq(0, 4, .2),minor_breaks = seq(0, 4, 0.1))+theme_minimal()#reverse x axis (like in LC model)+axis tick mars
-  plot<-plot+ggtitle(filename)+ylab("Amplitude")#Add labels
-  plot<-plot+geom_vline(xintercept=c(2.245,2.385,3.52,3.68), linetype = "dashed", color = "black")#plot ranges for GLx/mI
-  
-  plot<-plot+ geom_label_npc(label=paste0("Glx Merge = ",GlxMerge),npcx=.93,npcy=.95)
-  plot<-plot+ geom_label_npc(label=paste0("Glx Distinct = ",GlxDistinct),npcx=.93,npcy=.87)
-  plot<-plot+ geom_label_npc(label=paste0("mI Merge = ",mIMerge),npcx=.93,npcy=.79)
-  plot<-plot+ geom_label_npc(label=paste0("mI Distinct = ",mIDistinct),npcx=.93,npcy=.71)
-  return(plot)
-}
 
 Glxpeaks<-function(spectra_data){
   bigdata<-subset(spectra_data,ppm>2.1 & ppm<2.5) #this is the data frame where I'm going to search for the peaks 
