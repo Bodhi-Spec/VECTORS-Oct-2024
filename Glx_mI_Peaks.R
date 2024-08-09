@@ -6,7 +6,7 @@ Glxpeaks<-function(spectra_data){
   bigdata<-subset(spectra_data,ppm>2.1 & ppm<2.5) #this is the data frame where I'm going to search for the peaks 
   row<-c() #will be the row containing the number of peaks for all the spans
   Merge=1  #Merge metric: the final score should be the max span where there are still two (or more) peaks. Large implies better DQC
-  Distinct=1 #Distinct metric: final score should maximum span that #peaks>2 exist. Lower implies better DQC
+  Distinct=0 #Distinct metric: final score should maximum span that #peaks>2 exist. Lower implies better DQC
   for (span in 2*1:18+1){
     vector_peak<-peaks(bigdata$RelativeAmp,span)#returns vector of length processed data, with only TRUE or FALSE elements. TRUE being that element is a peak. Note peaks() function within Splus2R package
     index_peaks<-which(vector_peak==TRUE) #index of peaks
@@ -29,7 +29,7 @@ mIpeaks<-function(spectra_data){
   bigdata<-subset(spectra_data,ppm>3.4 & ppm<3.8) #this is the data frame where I'm going to search for the peaks 
   row<-c() #will be the row containing the number of peaks for all the spans
   Merge=1  #Merge metric: the final score should be the max span where there are still two (or more) peaks. Large implies better DQC
-  Distinct=1 #Distinct metric: final score should maximum span that #peaks>2 exist. Lower implies better DQC
+  Distinct=0 #Distinct metric: final score should maximum span that #peaks>2 exist. Lower implies better DQC
   
   for (span in 2*1:28+1){
     vector_peak<-peaks(bigdata$RelativeAmp,span)#returns vector of length processed data, with only TRUE or FALSE elements. TRUE being that element is a peak. Note peaks() function within Splus2R package
