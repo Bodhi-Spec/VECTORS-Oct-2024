@@ -1,6 +1,8 @@
 #________________Function that plots the spectrum given a single filename________________
 #Includes the SNR and FWHM on the graph.
 #This function is called and given the parameters from the getdata() function
+#Note this function is not part of the QA, but is provided to view the spectra
+
 
 plotgraph<-function(spectra_data,met_data,misc_data,filename){  
   label_data<-data.frame(xcord=c(1,1),ycord=c(.95,1),text=c(paste("SNR: ",misc_data$S.N),paste("FWHM:",misc_data$FWHM..ppm.)))
