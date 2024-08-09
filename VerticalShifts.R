@@ -1,5 +1,5 @@
 #This file supports the Vertical Shift tests --> the functions (anyNegative() and belowBaseline()) that detects if the processed data is negative and below the baseline respectively
-#Both anyNegative() and belowBaseline() is called through the GetData() function which provides it with the data in the parameters
+#Both anyNegative() and belowBaseline() is called through the GetData() function which provides it with the data in the parameters. To call these functions, use the command getdata(filename,"VerticalShifts")
 #Outputs a list with if anyNegative and belowBaseline are TRUE/FALSE
 
 #Checks if any processed data falls below 0 within the metbolite range
