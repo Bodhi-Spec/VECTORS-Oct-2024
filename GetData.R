@@ -81,6 +81,12 @@ getdata<-function(filename,purpose){ #purpose is the purpose of this function
 
 
 #OPTIONAL EXAMPLE TASKS________________________________________________________:
+#list of purposes (parameter in the getdata() function) and the metrics reported:
+#purpose="VerticalShifts" --> reports anyNegative and belowBaseline metric
+#purpose="DuplicatePeaks" --> reports existDuplicate metric and graphs the spectrum with duplicate peaks outlined
+#Glx_mI_Peaks
+
+
 
 #To find the doublet function (detecting movement artifact) for the first file:
 getdata(filename_list[1],"Double")
