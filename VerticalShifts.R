@@ -1,3 +1,11 @@
+### Author: Bodhi Beroukhim, bberoukhim@bwh.harvard.edu
+### Contact: Alexander P. Lin, aplin@bwh.harvard.edu
+### Date last updated: August 12, 2024
+
+### License: GNU GPL2, Copyright (C) 2024 Brigham and Women's Hospital
+
+
+
 #This file supports the Vertical Shift tests --> the functions (anyNegative() and belowBaseline()) that detects if the processed data is negative and below the baseline respectively
 #Both anyNegative() and belowBaseline() is called through the GetData() function which provides it with the data in the parameters. To call these functions, use the command getdata(filename,"VerticalShifts")
 #Outputs a list with if anyNegative and belowBaseline are TRUE/FALSE
