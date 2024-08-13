@@ -1,3 +1,11 @@
+### Author: Bodhi Beroukhim, bberoukhim@bwh.harvard.edu
+### Contact: Alexander P. Lin, aplin@bwh.harvard.edu
+### Date last updated: August 12, 2024
+
+### License: GNU GPL2, Copyright (C) 2024 Brigham and Women's Hospital
+
+
+
 #This file contains the fucntion (called DuplicatePeaks()) that detects movement artifacts that present as duplicate peaks
 #DuplicatePeaks() is called through the GetData() function which provides it with the data in the parameters. To call these functions, use the command getdata(filename,"DuplicatePeaks")
 #Outputs the spectra outlining any duplicate peaks and a TRUE/FALSE statement of if a movement artifact was detected
