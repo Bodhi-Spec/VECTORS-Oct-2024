@@ -1,3 +1,11 @@
+### Author: Bodhi Beroukhim, bberoukhim@bwh.harvard.edu
+### Contact: Alexander P. Lin, aplin@bwh.harvard.edu
+### Date last updated: August 12, 2024
+
+### License: GNU GPL2, Copyright (C) 2024 Brigham and Women's Hospital
+
+
+
 #This function converts COORD files into csv files
 #Run the code. It will prompt in the command line to provide the path to the folder containing the COORD files
 #Once provided, the code will create three .csv files that contain 1) the data points 2) the metbolite information (CRLB, SD, etc) and 3) Miscelleneous stats such as SNR and FWHM
