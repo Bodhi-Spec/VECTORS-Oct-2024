@@ -1,3 +1,11 @@
+### Author: Bodhi Beroukhim, bberoukhim@bwh.harvard.edu
+### Contact: Alexander P. Lin, aplin@bwh.harvard.edu
+### Date last updated: August 12, 2024
+
+### License: GNU GPL2, Copyright (C) 2024 Brigham and Women's Hospital
+
+
+
 #________________Function that plots the spectrum given a single filename________________
 #Includes the SNR and FWHM on the graph.
 #This function is called and given the parameters from the getdata() function
