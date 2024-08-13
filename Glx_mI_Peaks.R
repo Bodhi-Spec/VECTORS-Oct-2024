@@ -1,3 +1,11 @@
+### Author: Bodhi Beroukhim, bberoukhim@bwh.harvard.edu
+### Contact: Alexander P. Lin, aplin@bwh.harvard.edu
+### Date last updated: August 12, 2024
+
+### License: GNU GPL2, Copyright (C) 2024 Brigham and Women's Hospital
+
+
+
 #This file supports the Glx and mI Peaks tests --> the functions (Glxpeaks() and mIpeaks()) that detects the Merge and Distinct metrics for both Glx and mI
 #Both Glxpeaks() and mI() are called through the GetData() function which provides it with the data in the parameters. To call these functions, use the command getdata(filename,"Glx_mI_Peaks")
 #Outputs a list of all four scores 
